@@ -1,0 +1,242 @@
+.custom-navbar {
+  background-color: #87CEFA;
+}
+
+.custom-navbar .btn-outline-success,
+.custom-navbar .btn-outline-dark {
+  color: #000;
+  border-color: #000;    
+  background-color: transparent;
+  transition: all 0.3s;
+}
+
+.custom-navbar .btn-outline-success:hover,
+.custom-navbar .btn-outline-dark:hover {
+  background-color: #fff;    
+  color: #000;               
+  border-color: #000;
+}
+
+.hero-img {
+  width: 100%;
+  height: 80vh;
+  object-fit: cover;
+  object-position: center;
+}
+
+@media (max-width: 768px) {
+  .hero-img {
+    height: 60vh;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-img {
+    height: 40vh;
+  }
+}
+
+#carruselPrincipal .carousel-caption {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  text-align: center;
+  width: 80%;
+}
+
+#carruselPrincipal .carousel-caption h1,
+#carruselPrincipal .carousel-caption h2,
+#carruselPrincipal .carousel-caption p {
+  font-family: 'Arial', sans-serif;
+  color: #000;                
+  text-shadow: none;             
+  font-weight: normal;
+}
+
+#carruselPrincipal .carousel-caption h1,
+#carruselPrincipal .carousel-caption h2 {
+  font-size: clamp(1.5rem, 4vw, 3rem);
+}
+
+#carruselPrincipal .carousel-caption p {
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+}
+
+#carruselPrincipal .carousel-caption .btn {
+  padding: 12px 30px;
+  font-size: 1rem;
+  border-radius: 25px;
+  font-family: 'Arial', sans-serif;
+  font-weight: 500;
+  color: #000; 
+}
+
+.categoria-card {
+  width: 400px;
+  height: 320px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+  margin: 0 10px;
+}
+
+.categoria-card img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+}
+
+.categoria-card .card-body {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 1rem;
+}
+
+#carruselCategorias .carousel-control-prev,
+#carruselCategorias .carousel-control-next {
+  width: 60px;
+  height: 60px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+#carruselCategorias .carousel-control-prev {
+  left: -60px;
+}
+
+#carruselCategorias .carousel-control-next {
+  right: -60px; 
+}
+
+#carruselCategorias .carousel-control-prev i,
+#carruselCategorias .carousel-control-next i {
+  font-size: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  #carruselCategorias .carousel-control-prev {
+    left: -20px;
+  }
+  #carruselCategorias .carousel-control-next {
+    right: -20px;
+  }
+  #carruselCategorias .carousel-control-prev i,
+  #carruselCategorias .carousel-control-next i {
+    font-size: 2rem;
+  }
+  #carruselCategorias .carousel-inner {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 10px;
+  }
+  #carruselCategorias .carousel-item {
+    flex: 0 0 auto;
+    width: 80%;
+    scroll-snap-align: center;
+  }
+}
+
+.brands {
+  background-color: #fff;
+  padding: 3rem 0;
+  border-top: 3px solid #87CEFA;
+  border-bottom: 3px solid #87CEFA;
+  text-align: center;
+  margin: 40px auto;
+  max-width: 900px;
+}
+
+.brands-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  color: #000;
+}
+
+.brands-logos {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.brand-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color:#87CEFA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.brand-circle img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.old-price {
+  color: #888;
+  text-decoration: line-through;
+  font-size: 0.95rem;
+}
+
+.footer {
+  background-color: #87CEFA;
+  color: #000;
+  font-family: 'Arial', sans-serif;
+  padding: 2rem 0;
+}
+
+.footer-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links li a {
+  color: #000;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-links li a:hover {
+  text-decoration: underline;
+}
+
+.footer .social-icon {
+  display: inline-block;
+  color: #000;
+  border-radius: 50%;
+  padding: 10px;
+  transition: all 0.3s;
+}
+
+.footer-separator {
+  border: 0;
+  border-top: 1px solid rgba(0,0,0,0.3);
+  margin: 1.5rem 0;
+}
+
+.vertical-separator {
+  width: 1px;
+  height: 100%;
+  background-color: rgba(0,0,0,0.2);
+  margin: auto;
+}
+

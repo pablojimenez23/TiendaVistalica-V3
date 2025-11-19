@@ -1,0 +1,86 @@
+.impacto {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+}
+
+.impacto-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 2.5rem;
+}
+
+.impacto-banner {
+  position: relative;
+  width: 100%;
+  min-height: 250px;
+  margin-bottom: 2rem;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.impacto-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.impacto-banner.derecha {
+  justify-content: flex-end;
+}
+
+.impacto-banner-text {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 1.5rem 2rem;
+  max-width: 600px;
+  text-align: left;
+  border-radius: 8px;
+}
+
+.impacto-banner.derecha .impacto-banner-text {
+  text-align: right;
+}
+
+.impacto-banner-text h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.8rem;
+  color: #000;
+}
+
+.impacto-banner-text p {
+  font-size: 1rem;
+  color: #000;
+  line-height: 1.5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .impacto-banner {
+    flex-direction: column;
+    justify-content: center;
+    min-height: auto;
+    position: relative;
+  }
+
+  .impacto-banner img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .impacto-banner-text {
+    position: relative; 
+    max-width: 90%;
+    margin: 1rem auto;
+    padding: 1rem 1.5rem;
+    text-align: center !important;
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+}

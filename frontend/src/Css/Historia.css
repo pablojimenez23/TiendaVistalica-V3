@@ -1,0 +1,302 @@
+/* Historia de Vistalica */
+
+.historia-container {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  background-color: #f8f9fa;
+}
+
+.historia-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.historia-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.historia-subtitle {
+  font-size: 1.2rem;
+  color: #555;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Introducción */
+.historia-intro {
+  background-color: #fff;
+  padding: 3rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 4rem;
+}
+
+.historia-logo {
+  width: 100%;
+  max-width: 300px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.historia-intro-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+.historia-intro-text {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+/* Tarjetas de Hitos */
+.historia-hitos-section {
+  margin-bottom: 4rem;
+}
+
+.section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.hito-card {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  height: 100%;
+}
+
+.hito-imagen-container {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.hito-imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.hito-icono-overlay {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 50px;
+  height: 50px;
+  background-color: rgba(135, 206, 250, 0.95);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.hito-icono-overlay i {
+  font-size: 1.5rem;
+  color: #000;
+}
+
+.hito-content {
+  padding: 1.5rem;
+}
+
+.hito-año {
+  display: inline-block;
+  background-color: #87CEFA;
+  color: #000;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.hito-titulo {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.75rem;
+}
+
+.hito-descripcion {
+  font-size: 1rem;
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Valores */
+.historia-valores-section {
+  margin-bottom: 4rem;
+}
+
+.valor-card {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  height: 100%;
+}
+
+.valor-icono {
+  width: 70px;
+  height: 70px;
+  background-color: #87CEFA;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+}
+
+.valor-icono i {
+  font-size: 2rem;
+  color: #000;
+}
+
+.valor-titulo {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.valor-descripcion {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Cifras */
+.historia-cifras {
+  background-color: #fff;
+  padding: 3rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.cifra-item {
+  padding: 1rem;
+}
+
+.cifra-numero {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #87CEFA;
+  margin-bottom: 0.5rem;
+}
+
+.cifra-label {
+  font-size: 1rem;
+  color: #666;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .historia-title {
+    font-size: 2rem;
+  }
+
+  .historia-subtitle {
+    font-size: 1rem;
+  }
+
+  .historia-intro {
+    padding: 2rem 1.5rem;
+  }
+
+  .historia-intro-title {
+    font-size: 1.5rem;
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .hito-imagen-container {
+    height: 200px;
+  }
+
+  .hito-icono-overlay {
+    width: 45px;
+    height: 45px;
+  }
+
+  .hito-icono-overlay i {
+    font-size: 1.3rem;
+  }
+
+  .hito-content {
+    padding: 1.25rem;
+  }
+
+  .hito-titulo {
+    font-size: 1.2rem;
+  }
+
+  .hito-descripcion {
+    font-size: 0.95rem;
+  }
+
+  .valor-card {
+    padding: 1.5rem;
+  }
+
+  .valor-icono {
+    width: 60px;
+    height: 60px;
+  }
+
+  .valor-icono i {
+    font-size: 1.5rem;
+  }
+
+  .cifra-numero {
+    font-size: 2rem;
+  }
+
+  .cifra-label {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .historia-intro {
+    padding: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .hito-imagen-container {
+    height: 180px;
+  }
+
+  .hito-año {
+    font-size: 0.85rem;
+    padding: 4px 12px;
+  }
+
+  .hito-titulo {
+    font-size: 1.1rem;
+  }
+
+  .cifra-numero {
+    font-size: 1.8rem;
+  }
+}

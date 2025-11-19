@@ -1,0 +1,19 @@
+form .form-control, form .form-select {
+    border: 1px solid #000;
+    background-color: transparent;
+    color: #000;
+    transition: border-color 0.3s;
+}
+  
+form .form-control:focus, form .form-select:focus {
+  border-color: #87CEFA;
+  box-shadow: 0 0 5px #87CEFA;
+}
+  
+form .btn-primary {
+  background-color: #87CEFA;
+  border: none;
+  color: #000;
+  font-weight: 600;
+  padding: 10px 30px;
+}
