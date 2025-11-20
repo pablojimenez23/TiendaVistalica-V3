@@ -37,7 +37,6 @@ const ProductosTemporada = () => {
   };
 
   const calcularPrecioDescuento = (precio) => {
-    // Aplicar un 30% de descuento ficticio para mostrar ofertas
     return precio * 1.3;
   };
 

@@ -13,7 +13,7 @@ const DetalleProducto = () => {
   const [loading, setLoading] = useState(true);
   const [cantidad, setCantidad] = useState(1);
 
-  // Cargar producto desde el backend
+  // cargar producto desde el backend
   useEffect(() => {
     const cargarProducto = async () => {
       setLoading(true);

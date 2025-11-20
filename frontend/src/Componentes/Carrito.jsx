@@ -13,7 +13,7 @@ export const CarritoProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const { usuario } = useAuth();
 
-  // Cargar carrito del usuario desde el backend
+  // cargar carrito del usuario desde el backend
   useEffect(() => {
     if (usuario) {
       cargarCarrito();

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCarrito } from "./Carrito";
 import "../Css/Estilo Catalogo.css";
 
@@ -7,13 +7,16 @@ const API_URL = "http://localhost:8080/api";
 
 const Catalogo = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const categoriaParam = searchParams.get('categoria');
+  
   const [categoriaActiva, setCategoriaActiva] = useState('todos');
   const [productos, setProductos] = useState([]);
   const [categorias, setCategorias] = useState([]);
   const [loading, setLoading] = useState(true);
   const { agregarProducto } = useCarrito();
 
-  // Cargar categorías desde el backend
+  //Carga las categorias desde el backend
   useEffect(() => {
     const cargarCategorias = async () => {
       try {
@@ -29,6 +32,13 @@ const Catalogo = () => {
 
     cargarCategorias();
   }, []);
+
+  //Establece la categoría activa desde URL
+  useEffect(() => {
+    if (categoriaParam) {
+      setCategoriaActiva(parseInt(categoriaParam));
+    }
+  }, [categoriaParam]);
 
   // Cargar productos desde el backend
   useEffect(() => {
@@ -58,6 +68,11 @@ const Catalogo = () => {
 
   const handleFiltro = (categoriaId) => {
     setCategoriaActiva(categoriaId);
+    if (categoriaId === 'todos') {
+      navigate('/catalogo');
+    } else {
+      navigate(`/catalogo?categoria=${categoriaId}`);
+    }
   };
 
   const handleVerDetalle = (producto) => {

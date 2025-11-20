@@ -9,7 +9,7 @@ export const AuthProvider = ({ children }) => {
   const [cargando, setCargando] = useState(true);
   const [pedidos, setPedidos] = useState([]);
 
-  // Cargar usuario al iniciar
+  // Carga al usuario al iniciar
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem('usuarioActivo');
     if (usuarioGuardado) {
@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
     setCargando(false);
   }, []);
 
-  // Cargar pedidos del usuario desde el backend
+  // Carga los pedidos del usuario desde el backend
   const cargarPedidosUsuario = async (usuarioId) => {
     try {
       const response = await fetch(`${API_URL}/pedidos/usuario/${usuarioId}`);
@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
     return usuario !== null;
   };
 
-  // Crear nuevo pedido en el backend
+  // Crea un nuevo pedido en el backend
   const agregarPedido = async (carrito, total) => {
     if (!usuario) return null;
 
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Obtener pedidos del usuario actual
+  // Obtiene los pedidos actuales del usuario
   const obtenerPedidosUsuario = () => {
     return pedidos;
   };
