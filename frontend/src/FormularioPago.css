@@ -1,0 +1,102 @@
+.formulario-pago-container {
+  background-color: #f8f9fa;
+  min-height: 100vh;
+  padding-bottom: 2rem;
+}
+
+.resumen-pedido {
+  position: sticky;
+  top: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.resumen-pedido .card-header {
+  background-color: #87CEFA;
+  color: #000;
+  font-weight: 600;
+}
+
+.resumen-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.resumen-item:last-child {
+  border-bottom: none;
+}
+
+.total-pedido {
+  font-size: 1.25rem;
+  margin-top: 1rem;
+}
+
+.formulario-pago-container .card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: none;
+  border-radius: 10px;
+}
+
+.formulario-pago-container .card-header {
+  background-color: #87CEFA;
+  color: #000;
+  font-weight: 600;
+  border-radius: 10px 10px 0 0 !important;
+}
+
+.formulario-pago-container .form-control,
+.formulario-pago-container .form-select {
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  padding: 0.75rem;
+  transition: border-color 0.3s;
+}
+
+.formulario-pago-container .form-control:focus,
+.formulario-pago-container .form-select:focus {
+  border-color: #87CEFA;
+  box-shadow: 0 0 0 0.2rem rgba(135, 206, 250, 0.25);
+}
+
+.formulario-pago-container .form-control.is-invalid {
+  border-color: #dc3545;
+}
+
+.formulario-pago-container .text-danger {
+  font-size: 0.875rem;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+.formulario-pago-container .form-check-input:checked {
+  background-color: #87CEFA;
+  border-color: #87CEFA;
+}
+
+.formulario-pago-container .btn-primary {
+  background-color: #87CEFA;
+  border: none;
+  color: #000;
+  font-weight: 600;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+
+.formulario-pago-container .btn-primary:hover {
+  background-color: #6fb8e8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(135, 206, 250, 0.4);
+}
+
+.formulario-pago-container .btn-primary:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .resumen-pedido {
+    position: relative;
+    top: 0;
+  }
+}
