@@ -3,7 +3,8 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "../Css/Estilo.css";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
+
 
 const Login = () => {
   const navigate = useNavigate();

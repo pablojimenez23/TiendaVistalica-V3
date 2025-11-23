@@ -3,7 +3,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useCarrito } from "./Carrito";
 import "../Css/Estilo Catalogo.css";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
+
 
 const Catalogo = () => {
   const navigate = useNavigate();

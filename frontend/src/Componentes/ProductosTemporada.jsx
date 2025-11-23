@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Css/Estilo.css";
 
-const API_URL = "http://localhost:8080/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
+
 
 const ProductosTemporada = () => {
   const [productos, setProductos] = useState([]);

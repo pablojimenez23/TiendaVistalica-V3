@@ -5,7 +5,7 @@ import "../Css/Estilo Carrito Compras.css";
 import { useAuth } from "./AuthContext";
 
 const CarritoContext = createContext();
-const API_URL = "http://localhost:8080/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
 
 export const CarritoProvider = ({ children }) => {
   const [carrito, setCarrito] = useState([]);
