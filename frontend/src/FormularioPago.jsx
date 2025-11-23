@@ -101,6 +101,13 @@ const FormularioPago = () => {
     return '';
   };
 
+  const validarRegion = (value) => {
+    if (value.trim() === '') {
+      return 'La región es obligatoria.';
+    }
+    return '';
+  };
+
   const validarCodigoPostal = (value) => {
     if (value.trim() === '') {
       return 'El código postal es obligatorio.';
@@ -176,6 +183,9 @@ const FormularioPago = () => {
       case 'ciudad':
         error = validarCiudad(value);
         break;
+      case 'region':
+        error = validarRegion(value);
+        break;
       case 'codigoPostal':
         error = validarCodigoPostal(value);
         break;
@@ -192,17 +202,22 @@ const FormularioPago = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar todos los campos
+    // Validar campos comunes
     const newErrors = {
-      nombreTarjeta: validarNombreTarjeta(formData.nombreTarjeta),
-      numeroTarjeta: validarNumeroTarjeta(formData.numeroTarjeta),
-      fechaExpiracion: validarFechaExpiracion(formData.fechaExpiracion),
-      cvv: validarCVV(formData.cvv),
       direccionEnvio: validarDireccion(formData.direccionEnvio),
       ciudad: validarCiudad(formData.ciudad),
+      region: validarRegion(formData.region),
       codigoPostal: validarCodigoPostal(formData.codigoPostal),
       telefono: validarTelefono(formData.telefono)
     };
+
+    // Solo validar campos de tarjeta si el método de pago es tarjeta
+    if (formData.metodoPago === 'tarjeta') {
+      newErrors.nombreTarjeta = validarNombreTarjeta(formData.nombreTarjeta);
+      newErrors.numeroTarjeta = validarNumeroTarjeta(formData.numeroTarjeta);
+      newErrors.fechaExpiracion = validarFechaExpiracion(formData.fechaExpiracion);
+      newErrors.cvv = validarCVV(formData.cvv);
+    }
 
     setErrors(newErrors);
 
@@ -219,13 +234,13 @@ const FormularioPago = () => {
         usuario: { id: usuario.id },
         total: obtenerTotal(),
         estado: "PENDIENTE",
-        direccionEnvio: ${formData.direccionEnvio}, ${formData.ciudad}, ${formData.region},
+        direccionEnvio: `${formData.direccionEnvio}, ${formData.ciudad}, ${formData.region}`,
         metodoPago: formData.metodoPago === 'tarjeta' 
-          ? Tarjeta **** ${formData.numeroTarjeta.slice(-4)} 
+          ? `Tarjeta **** ${formData.numeroTarjeta.slice(-4)}` 
           : 'Transferencia Bancaria'
       };
 
-      const response = await fetch(${API_URL}/pedidos, {
+      const response = await fetch(`${API_URL}/pedidos`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -347,7 +362,7 @@ const FormularioPago = () => {
                         </label>
                         <input
                           type="text"
-                          className={form-control ${errors.nombreTarjeta ? 'is-invalid' : ''}}
+                          className={`form-control ${errors.nombreTarjeta ? 'is-invalid' : ''}`}
                           id="nombreTarjeta"
                           name="nombreTarjeta"
                           placeholder="Juan Pérez"
@@ -366,7 +381,7 @@ const FormularioPago = () => {
                         </label>
                         <input
                           type="text"
-                          className={form-control ${errors.numeroTarjeta ? 'is-invalid' : ''}}
+                          className={`form-control ${errors.numeroTarjeta ? 'is-invalid' : ''}`}
                           id="numeroTarjeta"
                           name="numeroTarjeta"
                           placeholder="1234 5678 9012 3456"
@@ -386,7 +401,7 @@ const FormularioPago = () => {
                           </label>
                           <input
                             type="text"
-                            className={form-control ${errors.fechaExpiracion ? 'is-invalid' : ''}}
+                            className={`form-control ${errors.fechaExpiracion ? 'is-invalid' : ''}`}
                             id="fechaExpiracion"
                             name="fechaExpiracion"
                             placeholder="MM/AA"
@@ -405,7 +420,7 @@ const FormularioPago = () => {
                           </label>
                           <input
                             type="text"
-                            className={form-control ${errors.cvv ? 'is-invalid' : ''}}
+                            className={`form-control ${errors.cvv ? 'is-invalid' : ''}`}
                             id="cvv"
                             name="cvv"
                             placeholder="123"
@@ -435,7 +450,7 @@ const FormularioPago = () => {
                     </label>
                     <input
                       type="text"
-                      className={form-control ${errors.direccionEnvio ? 'is-invalid' : ''}}
+                      className={`form-control ${errors.direccionEnvio ? 'is-invalid' : ''}`}
                       id="direccionEnvio"
                       name="direccionEnvio"
                       placeholder="Calle Ejemplo 123, Depto 456"
@@ -455,7 +470,7 @@ const FormularioPago = () => {
                       </label>
                       <input
                         type="text"
-                        className={form-control ${errors.ciudad ? 'is-invalid' : ''}}
+                        className={`form-control ${errors.ciudad ? 'is-invalid' : ''}`}
                         id="ciudad"
                         name="ciudad"
                         placeholder="Santiago"
@@ -473,7 +488,7 @@ const FormularioPago = () => {
                         Región
                       </label>
                       <select
-                        className="form-select"
+                        className={`form-select ${errors.region ? 'is-invalid' : ''}`}
                         id="region"
                         name="region"
                         value={formData.region}
@@ -489,6 +504,9 @@ const FormularioPago = () => {
                         <option value="Maule">Maule</option>
                         <option value="O'Higgins">O'Higgins</option>
                       </select>
+                      {errors.region && (
+                        <span className="text-danger">{errors.region}</span>
+                      )}
                     </div>
                   </div>
 
@@ -499,7 +517,7 @@ const FormularioPago = () => {
                       </label>
                       <input
                         type="text"
-                        className={form-control ${errors.codigoPostal ? 'is-invalid' : ''}}
+                        className={`form-control ${errors.codigoPostal ? 'is-invalid' : ''}`}
                         id="codigoPostal"
                         name="codigoPostal"
                         placeholder="1234567"
@@ -518,7 +536,7 @@ const FormularioPago = () => {
                       </label>
                       <input
                         type="text"
-                        className={form-control ${errors.telefono ? 'is-invalid' : ''}}
+                        className={`form-control ${errors.telefono ? 'is-invalid' : ''}`}
                         id="telefono"
                         name="telefono"
                         placeholder="+56912345678"
