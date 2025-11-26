@@ -2,26 +2,42 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "../Css/Estilo.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
-
+const API_URL = import.meta.env.VITE_API_URL || "http://54.87.26.211:8080/api";
 
 const ProductosTemporada = () => {
   const [productos, setProductos] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const cargarProductosTemporada = async () => {
       setLoading(true);
+      setError(null);
+      
       try {
-        const response = await fetch(`${API_URL}/productos/temporada`);
-        if (response.ok) {
-          const data = await response.json();
-          // Limitar a 3 productos para la vista de inicio
-          setProductos(data.slice(0, 3));
+        const response = await fetch(`${API_URL}/productos/temporada`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          mode: 'cors',
+        });
+
+        if (!response.ok) {
+          throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
+
+        const data = await response.json();
+        
+        // Limitar a 3 productos para la vista de inicio
+        setProductos(Array.isArray(data) ? data.slice(0, 3) : []);
+        
       } catch (error) {
         console.error("Error al cargar productos de temporada:", error);
+        setError(error.message);
+        setProductos([]);
+        
       } finally {
         setLoading(false);
       }
@@ -51,6 +67,27 @@ const ProductosTemporada = () => {
         <div className="container text-center">
           <div className="spinner-border text-primary" role="status">
             <span className="visually-hidden">Cargando ofertas...</span>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-5 bg-light">
+        <div className="container">
+          <h2 className="text-center mb-4">Ofertas de temporada</h2>
+          <div className="alert alert-warning text-center" role="alert">
+            <i className="bi bi-exclamation-triangle me-2"></i>
+            No se pudieron cargar las ofertas en este momento.
+            <br />
+            <small className="text-muted">Por favor, intenta más tarde.</small>
+          </div>
+          <div className="text-center mt-4">
+            <Link to="/catalogo" className="btn btn-primary">
+              Ver Catálogo Completo
+            </Link>
           </div>
         </div>
       </section>
@@ -93,6 +130,9 @@ const ProductosTemporada = () => {
                     className="card-img-top" 
                     alt={producto.nombre}
                     style={{ height: '300px', objectFit: 'cover' }}
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/300x300?text=Sin+Imagen';
+                    }}
                   />
                   <span className="position-absolute top-0 end-0 m-2 badge bg-warning text-dark">
                     <i className="bi bi-star-fill me-1"></i>

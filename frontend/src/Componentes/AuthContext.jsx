@@ -1,29 +1,54 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
-
-const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://54.87.26.211:8080/api";
 
 export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(null);
+  const [token, setToken] = useState(null);
   const [cargando, setCargando] = useState(true);
   const [pedidos, setPedidos] = useState([]);
 
-  // Carga al usuario al iniciar
+  // Cargar usuario y token al iniciar
   useEffect(() => {
     const usuarioGuardado = localStorage.getItem('usuarioActivo');
-    if (usuarioGuardado) {
+    const tokenGuardado = localStorage.getItem('token');
+    
+    if (usuarioGuardado && tokenGuardado) {
       const user = JSON.parse(usuarioGuardado);
       setUsuario(user);
-      cargarPedidosUsuario(user.id);
+      setToken(tokenGuardado);
+      cargarPedidosUsuario(user.id, tokenGuardado);
     }
     setCargando(false);
   }, []);
 
-  // Carga los pedidos del usuario desde el backend
-  const cargarPedidosUsuario = async (usuarioId) => {
+  // Función auxiliar para hacer peticiones con token
+  const fetchConToken = async (url, options = {}) => {
+    const headers = {
+      'Content-Type': 'application/json',
+      ...options.headers,
+    };
+
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    return fetch(url, {
+      ...options,
+      headers,
+    });
+  };
+
+  // Cargar pedidos del usuario
+  const cargarPedidosUsuario = async (usuarioId, authToken) => {
     try {
-      const response = await fetch(`${API_URL}/pedidos/usuario/${usuarioId}`);
+      const response = await fetch(`${API_URL}/pedidos/usuario/${usuarioId}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`
+        }
+      });
+      
       if (response.ok) {
         const data = await response.json();
         setPedidos(data);
@@ -33,25 +58,34 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const iniciarSesion = (datosUsuario) => {
+  const iniciarSesion = (datosUsuario, authToken) => {
     setUsuario(datosUsuario);
+    setToken(authToken);
     localStorage.setItem('usuarioActivo', JSON.stringify(datosUsuario));
-    cargarPedidosUsuario(datosUsuario.id);
+    localStorage.setItem('token', authToken);
+    cargarPedidosUsuario(datosUsuario.id, authToken);
   };
 
   const cerrarSesion = () => {
     setUsuario(null);
+    setToken(null);
     setPedidos([]);
     localStorage.removeItem('usuarioActivo');
+    localStorage.removeItem('token');
   };
 
   const estaAutenticado = () => {
-    return usuario !== null;
+    return usuario !== null && token !== null;
   };
 
-  // Crea un nuevo pedido en el backend
+  // Verificar si es admin
+  const esAdmin = () => {
+    return usuario && usuario.rol && usuario.rol.nombre === 'ADMIN';
+  };
+
+  // Crear pedido con token
   const agregarPedido = async (carrito, total) => {
-    if (!usuario) return null;
+    if (!usuario || !token) return null;
 
     try {
       const nuevoPedido = {
@@ -62,17 +96,14 @@ export const AuthProvider = ({ children }) => {
         metodoPago: "Por definir"
       };
 
-      const response = await fetch(`${API_URL}/pedidos`, {
+      const response = await fetchConToken(`${API_URL}/pedidos`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify(nuevoPedido)
       });
 
       if (response.ok) {
         const pedidoCreado = await response.json();
-        await cargarPedidosUsuario(usuario.id);
+        await cargarPedidosUsuario(usuario.id, token);
         return pedidoCreado;
       }
     } catch (error) {
@@ -81,7 +112,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Obtiene los pedidos actuales del usuario
   const obtenerPedidosUsuario = () => {
     return pedidos;
   };
@@ -89,14 +119,17 @@ export const AuthProvider = ({ children }) => {
   return (
     <AuthContext.Provider value={{ 
       usuario, 
+      token,
       setUsuario, 
       iniciarSesion, 
       cerrarSesion, 
       estaAutenticado,
+      esAdmin,
       cargando,
       pedidos,
       agregarPedido,
-      obtenerPedidosUsuario
+      obtenerPedidosUsuario,
+      fetchConToken
     }}>
       {children}
     </AuthContext.Provider>

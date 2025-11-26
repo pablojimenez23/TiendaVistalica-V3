@@ -4,8 +4,10 @@ import { useAuth } from "./AuthContext";
 import { useCarrito } from "./Carrito";
 import "../Css/FormularioPago.css";
 
+const API_URL = import.meta.env.VITE_API_URL || "http://54.87.26.211/api";
+
 const FormularioPago = () => {
-  const { usuario } = useAuth();
+  const { usuario, token } = useAuth();
   const { carrito, obtenerTotal, vaciarCarrito } = useCarrito();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -101,13 +103,6 @@ const FormularioPago = () => {
     return '';
   };
 
-  const validarRegion = (value) => {
-    if (value.trim() === '') {
-      return 'La región es obligatoria.';
-    }
-    return '';
-  };
-
   const validarCodigoPostal = (value) => {
     if (value.trim() === '') {
       return 'El código postal es obligatorio.';
@@ -127,14 +122,12 @@ const FormularioPago = () => {
     return '';
   };
 
-  // Formatear número de tarjeta (agrega espacios cada 4 dígitos)
   const formatearNumeroTarjeta = (value) => {
     const cleaned = value.replace(/\s/g, '');
     const match = cleaned.match(/.{1,4}/g);
     return match ? match.join(' ') : cleaned;
   };
 
-  // Formatear fecha de expiración (MM/AA)
   const formatearFechaExpiracion = (value) => {
     const cleaned = value.replace(/\D/g, '');
     if (cleaned.length >= 2) {
@@ -162,7 +155,6 @@ const FormularioPago = () => {
 
     setFormData(prev => ({ ...prev, [name]: value }));
 
-    // Validación en tiempo real
     let error = '';
     switch (name) {
       case 'nombreTarjeta':
@@ -183,9 +175,6 @@ const FormularioPago = () => {
       case 'ciudad':
         error = validarCiudad(value);
         break;
-      case 'region':
-        error = validarRegion(value);
-        break;
       case 'codigoPostal':
         error = validarCodigoPostal(value);
         break;
@@ -202,22 +191,16 @@ const FormularioPago = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar campos comunes
     const newErrors = {
+      nombreTarjeta: validarNombreTarjeta(formData.nombreTarjeta),
+      numeroTarjeta: validarNumeroTarjeta(formData.numeroTarjeta),
+      fechaExpiracion: validarFechaExpiracion(formData.fechaExpiracion),
+      cvv: validarCVV(formData.cvv),
       direccionEnvio: validarDireccion(formData.direccionEnvio),
       ciudad: validarCiudad(formData.ciudad),
-      region: validarRegion(formData.region),
       codigoPostal: validarCodigoPostal(formData.codigoPostal),
       telefono: validarTelefono(formData.telefono)
     };
-
-    // Solo validar campos de tarjeta si el método de pago es tarjeta
-    if (formData.metodoPago === 'tarjeta') {
-      newErrors.nombreTarjeta = validarNombreTarjeta(formData.nombreTarjeta);
-      newErrors.numeroTarjeta = validarNumeroTarjeta(formData.numeroTarjeta);
-      newErrors.fechaExpiracion = validarFechaExpiracion(formData.fechaExpiracion);
-      newErrors.cvv = validarCVV(formData.cvv);
-    }
 
     setErrors(newErrors);
 
@@ -228,7 +211,7 @@ const FormularioPago = () => {
     setLoading(true);
 
     try {
-      const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
+      const API_URL = import.meta.env.VITE_API_URL || "http://54.87.26.211:8080/api";
       
       const pedido = {
         usuario: { id: usuario.id },
@@ -244,6 +227,7 @@ const FormularioPago = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(pedido)
       });
@@ -488,7 +472,7 @@ const FormularioPago = () => {
                         Región
                       </label>
                       <select
-                        className={`form-select ${errors.region ? 'is-invalid' : ''}`}
+                        className="form-select"
                         id="region"
                         name="region"
                         value={formData.region}
@@ -504,9 +488,6 @@ const FormularioPago = () => {
                         <option value="Maule">Maule</option>
                         <option value="O'Higgins">O'Higgins</option>
                       </select>
-                      {errors.region && (
-                        <span className="text-danger">{errors.region}</span>
-                      )}
                     </div>
                   </div>
 

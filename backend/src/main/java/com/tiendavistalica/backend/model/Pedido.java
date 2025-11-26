@@ -32,11 +32,15 @@ public class Pedido {
     @Column(name = "metodo_pago", length = 100)
     private String metodoPago;
     
+    @Column(name = "motivo_cancelacion", length = 1000)
+    private String motivoCancelacion;
+    
     public Pedido() {
         this.fechaPedido = LocalDateTime.now();
         this.estado = "PENDIENTE";
     }
     
+    // Getters y Setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
@@ -57,4 +61,7 @@ public class Pedido {
     
     public String getMetodoPago() { return metodoPago; }
     public void setMetodoPago(String metodoPago) { this.metodoPago = metodoPago; }
+    
+    public String getMotivoCancelacion() { return motivoCancelacion; }
+    public void setMotivoCancelacion(String motivoCancelacion) { this.motivoCancelacion = motivoCancelacion; }
 }

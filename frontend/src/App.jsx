@@ -17,6 +17,10 @@ import Contacto from "./Componentes/Contacto";
 import DetalleProducto from "./Componentes/DetalleProducto";
 import Perfil from "./Componentes/Perfil";
 import Pedidos from "./Componentes/Pedidos";
+import PedidosAdmin from "./Componentes/PedidosAdmin";
+import FormularioPago from "./Componentes/FormularioPago";
+import CuentasRegistradas from "./Componentes/CuentasRegistradas";
+import ProductosAdmin from "./Componentes/ProductosAdmin";
 import { CarritoProvider } from "./Componentes/Carrito";
 import Carrito from "./Componentes/Carrito";
 import { AuthProvider } from "./Componentes/AuthContext";
@@ -56,6 +60,10 @@ function App() {
               <Route path="/contacto" element={<Contacto />} />
               <Route path="/perfil" element={<Perfil />} />
               <Route path="/pedidos" element={<Pedidos />} />
+              <Route path="/pago" element={<FormularioPago />} />
+              <Route path="/cuentas" element={<CuentasRegistradas />} />
+              <Route path="/productos-admin" element={<ProductosAdmin />} />
+              <Route path="/pedidos-admin" element={<PedidosAdmin />} />
             </Routes>
             
             <Footer />

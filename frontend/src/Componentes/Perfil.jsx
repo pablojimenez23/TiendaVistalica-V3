@@ -60,7 +60,7 @@ const Perfil = () => {
                       <i className="bi bi-envelope me-1"></i>
                       Email:
                     </label>
-                    <p className="form-control-plaintext">{usuario.correo}</p>
+                    <p className="form-control-plaintext">{usuario.email}</p>
                   </div>
 
                   <div className="col-md-6">
@@ -70,7 +70,79 @@ const Perfil = () => {
                     </label>
                     <p className="form-control-plaintext">{usuario.genero}</p>
                   </div>
+
+                  <div className="col-md-6">
+                    <label className="form-label fw-bold">
+                      <i className="bi bi-shield-check me-1"></i>
+                      Rol:
+                    </label>
+                    <p className="form-control-plaintext">
+                      <span className={`badge ${
+                        usuario.rol?.nombre === "ADMINISTRADOR" 
+                          ? "bg-danger" 
+                          : "bg-primary"
+                      }`}>
+                        {usuario.rol?.nombre || "CLIENTE"}
+                      </span>
+                    </p>
+                  </div>
+
+                  {usuario.telefono && (
+                    <div className="col-md-6">
+                      <label className="form-label fw-bold">
+                        <i className="bi bi-telephone me-1"></i>
+                        Teléfono:
+                      </label>
+                      <p className="form-control-plaintext">{usuario.telefono}</p>
+                    </div>
+                  )}
                 </div>
+              </div>
+
+              {/* SECCIoN DE ADMINISTRADOR */}
+              {usuario.rol?.nombre === "ADMINISTRADOR" && (
+                <div className="card mb-3 border-primary">
+                  <div className="card-body">
+                    <h5 className="card-title mb-4">
+                      <i className="bi bi-shield-check me-2"></i>
+                      Panel de Administrador
+                    </h5>
+                    <div className="d-grid gap-3">
+                      <button
+                        className="btn btn-primary btn-lg"
+                        onClick={() => navigate("/cuentas")}
+                      >
+                        <i className="bi bi-people-fill me-2"></i>
+                        Gestionar Cuentas Registradas
+                      </button>
+                      <button
+                        className="btn btn-success btn-lg"
+                        onClick={() => navigate("/productos-admin")}
+                      >
+                        <i className="bi bi-box-seam me-2"></i>
+                        Gestionar Productos
+                      </button>
+                      <button
+                        className="btn btn-warning btn-lg text-dark"
+                        onClick={() => navigate("/pedidos-admin")}
+                      >
+                        <i className="bi bi-cart-check me-2"></i>
+                        Gestión de Pedidos
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Botón para ver pedidos personales (todos los usuarios) */}
+              <div className="d-grid gap-2 mt-3">
+                <button
+                  className="btn btn-outline-primary"
+                  onClick={() => navigate("/pedidos")}
+                >
+                  <i className="bi bi-box-seam me-2"></i>
+                  Mis Pedidos
+                </button>
               </div>
             </div>
           </div>

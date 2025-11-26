@@ -2,6 +2,7 @@ package com.tiendavistalica.backend.controller;
 
 import com.tiendavistalica.backend.model.Usuario;
 import com.tiendavistalica.backend.service.UsuarioService;
+import com.tiendavistalica.backend.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,27 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
     
+    @Autowired
+    private JwtUtil jwtUtil;
+    
     @PostMapping("/registro")
     public ResponseEntity<?> registrar(@RequestBody Usuario usuario) {
         try {
             Usuario nuevoUsuario = usuarioService.registrar(usuario);
             nuevoUsuario.setPassword(null);
-            return ResponseEntity.ok(nuevoUsuario);
+            
+            String rolNombre = nuevoUsuario.getRol() != null ? nuevoUsuario.getRol().getNombre() : "CLIENTE";
+            String token = jwtUtil.generateToken(
+                nuevoUsuario.getId(),
+                nuevoUsuario.getEmail(),
+                rolNombre
+            );
+            
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("usuario", nuevoUsuario);
+            respuesta.put("token", token);
+            
+            return ResponseEntity.ok(respuesta);
         } catch (RuntimeException e) {
             Map<String, String> error = new HashMap<>();
             error.put("error", e.getMessage());
@@ -39,7 +55,19 @@ public class UsuarioController {
         
         if (usuario != null) {
             usuario.setPassword(null);
-            return ResponseEntity.ok(usuario);
+            
+            String rolNombre = usuario.getRol() != null ? usuario.getRol().getNombre() : "CLIENTE";
+            String token = jwtUtil.generateToken(
+                usuario.getId(),
+                usuario.getEmail(),
+                rolNombre
+            );
+            
+            Map<String, Object> respuesta = new HashMap<>();
+            respuesta.put("usuario", usuario); 
+            respuesta.put("token", token);
+            
+            return ResponseEntity.ok(respuesta);
         } else {
             return ResponseEntity.status(401).body("Credenciales incorrectas");
         }
@@ -62,16 +90,6 @@ public class UsuarioController {
         return ResponseEntity.notFound().build();
     }
     
-    @GetMapping("/email/{email}")
-    public ResponseEntity<Usuario> obtenerPorEmail(@PathVariable String email) {
-        Usuario usuario = usuarioService.buscarPorEmail(email);
-        if (usuario != null) {
-            usuario.setPassword(null);
-            return ResponseEntity.ok(usuario);
-        }
-        return ResponseEntity.notFound().build();
-    }
-    
     @PutMapping("/{id}")
     public ResponseEntity<Usuario> actualizar(@PathVariable Long id, @RequestBody Usuario usuario) {
         Usuario usuarioExistente = usuarioService.buscarPorId(id);
@@ -84,65 +102,14 @@ public class UsuarioController {
         return ResponseEntity.ok(actualizado);
     }
     
-    @PatchMapping("/{id}/perfil")
-    public ResponseEntity<Usuario> actualizarPerfil(@PathVariable Long id, @RequestBody Map<String, String> datos) {
-        Usuario usuario = usuarioService.buscarPorId(id);
-        if (usuario == null) {
-            return ResponseEntity.notFound().build();
-        }
-        
-        if (datos.containsKey("nombre")) usuario.setNombre(datos.get("nombre"));
-        if (datos.containsKey("apellido")) usuario.setApellido(datos.get("apellido"));
-        if (datos.containsKey("telefono")) usuario.setTelefono(datos.get("telefono"));
-        
-        Usuario actualizado = usuarioService.actualizar(usuario);
-        actualizado.setPassword(null);
-        return ResponseEntity.ok(actualizado);
-    }
-    
-    @PatchMapping("/{id}/password")
-    public ResponseEntity<?> cambiarPassword(@PathVariable Long id, @RequestBody Map<String, String> datos) {
-        String passwordActual = datos.get("passwordActual");
-        String passwordNueva = datos.get("passwordNueva");
-        
-        Usuario usuario = usuarioService.buscarPorId(id);
-        if (usuario == null) {
-            return ResponseEntity.notFound().build();
-        }
-        
-        if (!usuario.getPassword().equals(passwordActual)) {
-            return ResponseEntity.badRequest().body("Contraseña actual incorrecta");
-        }
-        
-        usuario.setPassword(passwordNueva);
-        usuarioService.actualizar(usuario);
-        
-        Map<String, String> respuesta = new HashMap<>();
-        respuesta.put("mensaje", "Contraseña actualizada correctamente");
-        return ResponseEntity.ok(respuesta);
-    }
-    
     @DeleteMapping("/{id}")
     public ResponseEntity<?> eliminar(@PathVariable Long id) {
-        Usuario usuario = usuarioService.buscarPorId(id);
-        if (usuario == null) {
+        if (usuarioService.buscarPorId(id) == null) {
             return ResponseEntity.notFound().build();
         }
-        
         usuarioService.eliminar(id);
-        
         Map<String, String> respuesta = new HashMap<>();
-        respuesta.put("mensaje", "Usuario eliminado correctamente");
-        return ResponseEntity.ok(respuesta);
-    }
-    
-    @DeleteMapping("/batch")
-    public ResponseEntity<?> eliminarVarios(@RequestBody List<Long> ids) {
-        usuarioService.eliminarVarios(ids);
-        
-        Map<String, String> respuesta = new HashMap<>();
-        respuesta.put("mensaje", "Usuarios eliminados correctamente");
-        respuesta.put("cantidad", String.valueOf(ids.size()));
+        respuesta.put("mensaje", "Usuario eliminado");
         return ResponseEntity.ok(respuesta);
     }
 }

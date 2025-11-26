@@ -3,7 +3,7 @@ import { Carousel } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import "../Css/Estilo.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://54.87.26.211:8080/api";
 
 
 const Categorias = () => {

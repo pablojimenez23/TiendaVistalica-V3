@@ -3,8 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "./AuthContext";
 import "../Css/Estilo.css";
 
-const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
-
+const API_URL = import.meta.env.VITE_API_URL || "http://54.87.26.211:8080/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -75,9 +74,9 @@ const Login = () => {
       });
 
       if (response.ok) {
-        const usuario = await response.json();
-        iniciarSesion(usuario);
-        alert(`Bienvenido ${usuario.nombre} ${usuario.apellido}`);
+        const data = await response.json();
+        iniciarSesion(data.usuario, data.token);
+        alert(`Bienvenido ${data.usuario.nombre} ${data.usuario.apellido}`);
         setFormData({ email: '', password: '' });
         navigate('/');
       } else {

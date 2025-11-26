@@ -5,28 +5,32 @@ import "../Css/Estilo Carrito Compras.css";
 import { useAuth } from "./AuthContext";
 
 const CarritoContext = createContext();
-const API_URL = import.meta.env.VITE_API_URL || "http://54.242.15.41:8080/api";
+const API_URL = import.meta.env.VITE_API_URL || "http://54.87.26.211:8080/api";
 
 export const CarritoProvider = ({ children }) => {
   const [carrito, setCarrito] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { usuario } = useAuth();
+  const { usuario, token } = useAuth();
 
   // cargar carrito del usuario desde el backend
   useEffect(() => {
-    if (usuario) {
+    if (usuario && token) {
       cargarCarrito();
     } else {
       setCarrito([]);
     }
-  }, [usuario]);
+  }, [usuario, token]);
 
   const cargarCarrito = async () => {
-    if (!usuario) return;
+    if (!usuario || !token) return;
 
     try {
-      const response = await fetch(`${API_URL}/carrito/usuario/${usuario.id}`);
+      const response = await fetch(`${API_URL}/carrito/usuario/${usuario.id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
       if (response.ok) {
         const data = await response.json();
         setCarrito(data);
@@ -53,6 +57,7 @@ export const CarritoProvider = ({ children }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           usuarioId: usuario.id,
@@ -74,7 +79,10 @@ export const CarritoProvider = ({ children }) => {
   const quitarProducto = async (itemId) => {
     try {
       const response = await fetch(`${API_URL}/carrito/item/${itemId}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
 
       if (response.ok) {
@@ -96,6 +104,7 @@ export const CarritoProvider = ({ children }) => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ cantidad: nuevaCantidad })
       });
@@ -115,7 +124,10 @@ export const CarritoProvider = ({ children }) => {
 
     try {
       const response = await fetch(`${API_URL}/carrito/usuario/${usuario.id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
       });
 
       if (response.ok) {
@@ -199,7 +211,7 @@ const Carrito = () => {
     setIsOpen
   } = useCarrito();
 
-  const { usuario, agregarPedido } = useAuth();
+  const { usuario } = useAuth();
   const navigate = useNavigate();
 
   const formatearPrecio = (precio) => {
@@ -209,7 +221,7 @@ const Carrito = () => {
     }).format(precio);
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (carrito.length === 0) return;
 
     if (!usuario) {
@@ -219,16 +231,8 @@ const Carrito = () => {
       return;
     }
 
-    const pedido = await agregarPedido(carrito, obtenerTotal());
-    
-    if (pedido) {
-      alert(`Pedido procesado por ${formatearPrecio(obtenerTotal())}`);
-      await vaciarCarrito();
-      setIsOpen(false);
-      navigate('/pedidos');
-    } else {
-      alert('Error al procesar el pedido. Intenta nuevamente.');
-    }
+    setIsOpen(false);
+    navigate('/pago');
   };
 
   const handleOverlayClick = (e) => {
